@@ -3,13 +3,18 @@ import javax.swing.JOptionPane;
 public class Stackrechner
 {
 	public static void main(String[] args) {
-		Stack<String> operator = new Stack<String>();
-		Stack<Integer> operand = new Stack<Integer>();
 		String s = "";
 		s = JOptionPane.showInputDialog(null, "Bitte gib deinen vollständig geklammerten algebraischer Ausdruck ein:");
-		while(s.length() > 0) {
-			String snippet = s.substring(0, 1);
-			s = s.substring(1);
+		System.out.println(rechne(s));
+	}
+	
+	public static int rechne(String s) {
+		String ausdruck = s;
+		Stack<String> operator = new Stack<String>();
+		Stack<Integer> operand = new Stack<Integer>();
+		while(ausdruck.length() > 0) {
+			String snippet = ausdruck.substring(0, 1);
+			ausdruck = ausdruck.substring(1);
 			if (snippet.matches("[)]")) {
 				int partResult = 0;
 				char ch = operator.pop().charAt(0);
@@ -33,8 +38,8 @@ public class Stackrechner
 				operator.push(snippet);
 			}
 			else if (snippet.matches("[0-9]")) {
-				snippet = snippet + getDigits(s);
-				s = s.substring(getDigits(s).length());
+				snippet = snippet + getDigits(ausdruck);
+				ausdruck = ausdruck.substring(getDigits(ausdruck).length());
 				operand.push(new Integer(snippet));
 			}
 			else {
@@ -43,9 +48,8 @@ public class Stackrechner
 				}
 			}
 		}
-		System.out.println(operand.pop().intValue());
+		return operand.pop().intValue();
 	}
-	
 	private static String getDigits(String s) {
 		String digits = s.substring(0, 1);
 		String result ="";
